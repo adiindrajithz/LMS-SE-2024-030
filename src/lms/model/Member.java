@@ -1,19 +1,23 @@
 package lms.model;
 
+/** Member — now the parent of Student and Staff, introduced this week. */
 public class Member {
     private String memberId;
     private String name;
     private int borrowedCount;
+    private int maxBorrowLimit;
 
-    public Member(String memberId, String name) {
+    public Member(String memberId, String name, int maxBorrowLimit) {
         setMemberId(memberId);
         setName(name);
+        this.maxBorrowLimit = maxBorrowLimit;
         this.borrowedCount = 0;
     }
 
     public String getMemberId() { return memberId; }
     public String getName() { return name; }
     public int getBorrowedCount() { return borrowedCount; }
+    public int getMaxBorrowLimit() { return maxBorrowLimit; }
 
     public void setMemberId(String memberId) {
         if (memberId == null || memberId.isBlank()) throw new IllegalArgumentException("Member ID cannot be blank");
@@ -34,6 +38,7 @@ public class Member {
 
     @Override
     public String toString() {
-        return "Member{id='" + memberId + "', name='" + name + "', borrowedCount=" + borrowedCount + "}";
+        return getClass().getSimpleName() + "{id='" + memberId + "', name='" + name
+                + "', borrowedCount=" + borrowedCount + ", limit=" + maxBorrowLimit + "}";
     }
 }
