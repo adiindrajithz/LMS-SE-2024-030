@@ -1,6 +1,6 @@
 package lms.model;
 
-public abstract class LibraryItem {
+public abstract class LibraryItem implements Loanable {
     private String id;
     private String title;
     private boolean isBorrowed;
@@ -25,12 +25,26 @@ public abstract class LibraryItem {
         this.title = title;
     }
 
-    public void borrowItem() { this.isBorrowed = true; }
-    public void returnItem() { this.isBorrowed = false; }
-
-    public double calculateLateFee(int daysLate) {
-        return daysLate * 10.0;
+    @Override
+    public void loan(Member member) {
+        if (isBorrowed) {
+            System.out.println(title + " is already on loan.");
+        } else if (member.getBorrowedCount() >= member.getMaxBorrowLimit()) {
+            System.out.println(member.getName() + " has reached the limit of " + member.getMaxBorrowLimit() + " items.");
+        } else {
+            isBorrowed = true;
+            member.incrementBorrowedCount();
+            System.out.println(title + " loaned to " + member.getName());
+        }
     }
+
+    @Override
+    public void returnItem() {
+        isBorrowed = false;
+        System.out.println(title + " returned.");
+    }
+
+    public abstract double calculateLateFee(int daysLate);
 
     @Override
     public String toString() {
