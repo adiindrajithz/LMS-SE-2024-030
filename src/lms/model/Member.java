@@ -1,7 +1,7 @@
 package lms.model;
 
-/** Member — now the parent of Student and Staff, introduced this week. */
-public class Member {
+public class Member implements Comparable<Member> {
+
     private String memberId;
     private String name;
     private int borrowedCount;
@@ -34,6 +34,12 @@ public class Member {
         this.borrowedCount = borrowedCount;
     }
 
+    public void decrementBorrowedCount() {
+        if (this.borrowedCount > 0) {
+            setBorrowedCount(this.borrowedCount - 1);
+        }
+    }
+
     public void incrementBorrowedCount() { setBorrowedCount(this.borrowedCount + 1); }
 
     @Override
@@ -41,4 +47,10 @@ public class Member {
         return getClass().getSimpleName() + "{id='" + memberId + "', name='" + name
                 + "', borrowedCount=" + borrowedCount + ", limit=" + maxBorrowLimit + "}";
     }
+
+    @Override
+    public int compareTo(Member other) {
+        return this.name.compareTo(other.name);
+    }
+
 }
