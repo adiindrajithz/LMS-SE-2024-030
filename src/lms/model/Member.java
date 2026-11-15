@@ -1,19 +1,23 @@
 package lms.model;
 
-public class Member {
+public class Member implements Comparable<Member> {
+
     private String memberId;
     private String name;
     private int borrowedCount;
+    private int maxBorrowLimit;
 
-    public Member(String memberId, String name) {
+    public Member(String memberId, String name, int maxBorrowLimit) {
         setMemberId(memberId);
         setName(name);
+        this.maxBorrowLimit = maxBorrowLimit;
         this.borrowedCount = 0;
     }
 
     public String getMemberId() { return memberId; }
     public String getName() { return name; }
     public int getBorrowedCount() { return borrowedCount; }
+    public int getMaxBorrowLimit() { return maxBorrowLimit; }
 
     public void setMemberId(String memberId) {
         if (memberId == null || memberId.isBlank()) throw new IllegalArgumentException("Member ID cannot be blank");
@@ -30,10 +34,23 @@ public class Member {
         this.borrowedCount = borrowedCount;
     }
 
+    public void decrementBorrowedCount() {
+        if (this.borrowedCount > 0) {
+            setBorrowedCount(this.borrowedCount - 1);
+        }
+    }
+
     public void incrementBorrowedCount() { setBorrowedCount(this.borrowedCount + 1); }
 
     @Override
     public String toString() {
-        return "Member{id='" + memberId + "', name='" + name + "', borrowedCount=" + borrowedCount + "}";
+        return getClass().getSimpleName() + "{id='" + memberId + "', name='" + name
+                + "', borrowedCount=" + borrowedCount + ", limit=" + maxBorrowLimit + "}";
     }
+
+    @Override
+    public int compareTo(Member other) {
+        return this.name.compareTo(other.name);
+    }
+
 }
